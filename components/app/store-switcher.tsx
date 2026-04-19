@@ -57,8 +57,8 @@ export function StoreSwitcher({ stores, selectedScope }: Props) {
         <Menu.Trigger
           disabled={pending}
           className={cn(
-            "flex w-full min-w-0 items-center gap-2 rounded-lg border border-[#ebebeb] bg-white px-2 py-2 text-left shadow-[0_1px_2px_rgba(51,51,51,0.04)] outline-none transition-colors",
-            "hover:bg-[#fafafa] focus-visible:ring-2 focus-visible:ring-[#ff6b1e]/25 disabled:opacity-50",
+            "flex w-full min-w-0 cursor-pointer items-center gap-2 rounded-lg border border-[#ebebeb] bg-white px-2 py-2 text-left shadow-[0_1px_2px_rgba(51,51,51,0.04)] outline-none transition-colors",
+            "hover:bg-[#fafafa] focus-visible:ring-2 focus-visible:ring-[#ff6b1e]/25 disabled:cursor-not-allowed disabled:opacity-50",
           )}
         >
           <span
@@ -74,12 +74,9 @@ export function StoreSwitcher({ stores, selectedScope }: Props) {
                 <span className="block truncate text-xs text-[#858585]">Combined · every location</span>
               </>
             ) : selectedStore ? (
-              <>
-                <span className="block truncate text-sm font-semibold text-[#333]">
-                  {selectedStore.displayName}
-                </span>
-                <span className="block truncate font-mono text-xs text-[#858585]">{selectedStore.id}</span>
-              </>
+              <span className="block truncate text-sm font-semibold text-[#333]">
+                {selectedStore.displayName}
+              </span>
             ) : null}
           </span>
           <ChevronsUpDown className="size-4 shrink-0 text-[#858585]" strokeWidth={2} aria-hidden />
@@ -148,9 +145,8 @@ export function StoreSwitcher({ stores, selectedScope }: Props) {
                         >
                           <StoreGlyph store={s} />
                         </span>
-                        <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                          <span className="truncate font-medium text-[#333]">{s.displayName}</span>
-                          <span className="truncate font-mono text-xs text-[#858585]">{s.id}</span>
+                        <span className="min-w-0 flex-1 truncate text-sm font-semibold text-[#333]">
+                          {s.displayName}
                         </span>
                         <span className="ml-auto flex shrink-0 items-center gap-1.5">
                           <Menu.RadioItemIndicator className="flex size-4 items-center justify-center text-[#ff6b1e]">

@@ -1,11 +1,12 @@
 "use server";
 
 import bcrypt from "bcryptjs";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 import { nanoid } from "nanoid";
 
 import { db } from "@/lib/db";
-import { stores } from "@/lib/db/schema";
+import { cloudBusinessSettings, stores } from "@/lib/db/schema";
 
 function slugify(raw: string) {
   return raw
@@ -55,5 +56,52 @@ export async function createStore(formData: FormData) {
       return { ok: false as const, error: "That slug is already taken." };
     }
     return { ok: false as const, error: "Could not create store." };
+  }
+}
+
+const STORE_NAME_MAX = 120;
+
+export async function updateStoreName(storeId: string, name: string) {
+  const trimmed = String(name ?? "").trim();
+  if (!trimmed) {
+    return { ok: false as const, error: "Name is required." };
+  }
+  if (trimmed.length > STORE_NAME_MAX) {
+    return { ok: false as const, error: `Name must be at most ${STORE_NAME_MAX} characters.` };
+  }
+
+  const [existing] = await db.select({ id: stores.id }).from(stores).where(eq(stores.id, storeId)).limit(1);
+  if (!existing) {
+    return { ok: false as const, error: "Store not found." };
+  }
+
+  const now = new Date();
+
+  try {
+    await db
+      .update(stores)
+      .set({ name: trimmed, updatedAt: now })
+      .where(eq(stores.id, storeId));
+
+    await db
+      .insert(cloudBusinessSettings)
+      .values({
+        storeId,
+        shopName: trimmed,
+        updatedAt: now,
+      })
+      .onConflictDoUpdate({
+        target: cloudBusinessSettings.storeId,
+        set: { shopName: trimmed, updatedAt: now },
+      });
+
+    revalidatePath("/settings");
+    revalidatePath("/dashboard");
+    revalidatePath("/bills");
+    revalidatePath("/inventory");
+
+    return { ok: true as const };
+  } catch {
+    return { ok: false as const, error: "Could not update store name." };
   }
 }

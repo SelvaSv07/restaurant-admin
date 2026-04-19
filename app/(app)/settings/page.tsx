@@ -1,4 +1,5 @@
 import { CreateStoreForm } from "@/components/app/create-store-form";
+import { EditStoreNameCell } from "@/components/app/edit-store-name-cell";
 import {
   Table,
   TableBody,
@@ -43,7 +44,9 @@ export default async function SettingsPage() {
           <TableBody>
             {stores.map((s) => (
               <TableRow key={s.id}>
-                <TableCell className="font-medium text-[#333]">{s.displayName}</TableCell>
+                <TableCell className="max-w-[220px]">
+                  <EditStoreNameCell storeId={s.id} displayName={s.displayName} />
+                </TableCell>
                 <TableCell className="text-[#858585]">{s.slug}</TableCell>
                 <TableCell className="font-mono text-xs text-[#333]">{s.id}</TableCell>
                 <TableCell className="text-right text-[#858585]">
