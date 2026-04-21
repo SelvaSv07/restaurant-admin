@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start -H 0.0.0.0 -p $PORT",
-    "start:prod": "drizzle-kit push && next start -H 0.0.0.0 -p $PORT",
+    "start": "next start -p $PORT",
+    "start:prod": "drizzle-kit push && next start -p $PORT",
     "lint": "eslint",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
