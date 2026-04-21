@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-import { ADMIN_SESSION_COOKIE, verifyAdminSessionCookie } from "@/lib/auth/session-verify-edge";
+import {
+  ADMIN_SESSION_COOKIE,
+  verifyAdminSessionCookie,
+} from "@/lib/auth/session-verify-edge";
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (

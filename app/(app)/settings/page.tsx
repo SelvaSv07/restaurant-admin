@@ -15,10 +15,10 @@ export default async function SettingsPage() {
   const stores = await listStores();
 
   return (
-    <div className="flex flex-col gap-8">
-      <header>
+    <div className="flex min-w-0 flex-col gap-8">
+      <header className="min-w-0">
         <h1 className="text-2xl font-semibold tracking-tight text-[#333]">Settings</h1>
-        <p className="mt-1 text-sm text-[#858585]">
+        <p className="mt-1 break-words text-sm text-[#858585]">
           Manage stores and POS sync credentials. Each POS sends data to{" "}
           <code className="rounded bg-[#f7f7f7] px-1 py-0.5 text-xs ring-1 ring-[#ebebeb]">POST /api/ingest/v1</code>{" "}
           with its store id and secret.
@@ -27,7 +27,7 @@ export default async function SettingsPage() {
 
       <CreateStoreForm />
 
-      <div className="overflow-hidden rounded-xl bg-white shadow-[0_4px_24px_rgba(51,51,51,0.06)] ring-1 ring-[#ebebeb]">
+      <div className="max-w-full overflow-hidden rounded-xl bg-white shadow-[0_4px_24px_rgba(51,51,51,0.06)] ring-1 ring-[#ebebeb]">
         <div className="border-b border-[#ebebeb] px-4 py-3">
           <p className="text-sm font-semibold text-[#333]">Stores</p>
           <p className="text-xs text-[#858585]">Use the store id when configuring each restaurant&apos;s POS.</p>

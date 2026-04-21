@@ -65,7 +65,7 @@ export function TimeframeSelector({ variant = "panel" }: { variant?: TimeframeSe
         id={periodFieldId}
         className={
           variant === "header"
-            ? "h-11 min-w-[200px] rounded-full border-0 bg-[#f7f7f7] px-3 pl-3 text-left text-sm font-medium text-[#333] shadow-none ring-1 ring-[#ebebeb] hover:bg-[#f0f0f0] focus-visible:ring-2 focus-visible:ring-[#ff6b1e]/35 data-placeholder:text-[#858585] sm:min-w-[220px]"
+            ? "h-11 w-full min-w-0 rounded-full border-0 bg-[#f7f7f7] px-3 pl-3 text-left text-sm font-medium text-[#333] shadow-none ring-1 ring-[#ebebeb] hover:bg-[#f0f0f0] focus-visible:ring-2 focus-visible:ring-[#ff6b1e]/35 data-placeholder:text-[#858585] sm:min-w-[220px]"
             : "h-11 w-full max-w-md rounded-xl border-0 bg-[#f7f7f7] px-3 text-left text-sm font-medium text-[#333] shadow-none ring-1 ring-[#ebebeb] hover:bg-[#f0f0f0] focus-visible:ring-2 focus-visible:ring-[#ff6b1e]/35 data-placeholder:text-[#858585]"
         }
         size="default"
@@ -128,8 +128,8 @@ export function TimeframeSelector({ variant = "panel" }: { variant?: TimeframeSe
 
   if (variant === "header") {
     return (
-      <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:items-end">
-        <div className="self-end">{selectBlock}</div>
+      <div className="flex w-full min-w-0 flex-col items-stretch gap-3 sm:w-auto sm:items-end">
+        <div className="w-full sm:w-auto sm:self-end">{selectBlock}</div>
         {customRange}
       </div>
     );

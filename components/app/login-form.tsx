@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -7,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { APP_LOGO_SRC, APP_NAME } from "@/lib/branding";
 
 export function LoginForm({ nextPath }: { nextPath: string }) {
   const router = useRouter();
@@ -40,9 +42,21 @@ export function LoginForm({ nextPath }: { nextPath: string }) {
   return (
     <div className="flex min-h-dvh items-center justify-center bg-[#fdfdfd] p-6">
       <Card className="w-full max-w-md shadow-[0_4px_24px_rgba(51,51,51,0.06)] ring-[#ebebeb]">
-        <CardHeader>
-          <CardTitle className="text-xl text-[#333]">Master admin</CardTitle>
-          <CardDescription>Sign in with the dashboard password configured on the server.</CardDescription>
+        <CardHeader className="space-y-4">
+          <div className="flex justify-center">
+            <Image
+              src={APP_LOGO_SRC}
+              alt=""
+              width={160}
+              height={48}
+              className="h-12 w-auto max-w-[200px] object-contain"
+              priority
+            />
+          </div>
+          <div className="space-y-1.5 text-center">
+            <CardTitle className="text-xl text-[#333]">{APP_NAME}</CardTitle>
+            <CardDescription>Master admin — sign in with the dashboard password configured on the server.</CardDescription>
+          </div>
         </CardHeader>
         <CardContent>
           <form className="space-y-4" onSubmit={(e) => void onSubmit(e)}>

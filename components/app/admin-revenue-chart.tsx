@@ -21,7 +21,7 @@ export function AdminRevenueChart({ data }: { data: DashboardChartPoint[] }) {
   }));
 
   return (
-    <div className="h-[320px] w-full">
+    <div className="h-[260px] w-full min-w-0 sm:h-[320px]">
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={chartData} margin={{ left: 8, right: 12, top: 8, bottom: 8 }}>
           <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#ebebeb" />

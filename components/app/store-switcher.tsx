@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useSyncExternalStore, useTransition } from "react";
 import { Menu } from "@base-ui/react/menu";
 import { Check, ChevronsUpDown, LayoutGrid, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -13,6 +13,8 @@ import { cn } from "@/lib/utils";
 type Props = {
   stores: StoreListRow[];
   selectedScope: StoreScope;
+  /** Collapses mobile nav drawer after a selection (admin shell). */
+  onCloseMobileNav?: () => void;
 };
 
 function StoreGlyph({ store }: { store: StoreListRow | null }) {
@@ -23,16 +25,21 @@ function StoreGlyph({ store }: { store: StoreListRow | null }) {
   return <span className="text-[13px] font-semibold text-[#333]">{ch}</span>;
 }
 
+function getShortcutKeyPrefix(): string {
+  if (typeof navigator === "undefined") return "⌘";
+  const isApple =
+    /Mac|iPhone|iPad|iPod/.test(navigator.platform) ||
+    navigator.userAgent.includes("Mac");
+  return isApple ? "⌘" : "Ctrl+";
+}
+
 /** 1-based slot in the menu (first row = 1), max 9 to match ⌘1 … ⌘9. */
 function ShortcutHint({ slot }: { slot: number | null }) {
-  const [prefix, setPrefix] = useState("⌘");
-  useEffect(() => {
-    const isApple =
-      typeof navigator !== "undefined" &&
-      (/Mac|iPhone|iPad|iPod/.test(navigator.platform) ||
-        navigator.userAgent.includes("Mac"));
-    setPrefix(isApple ? "⌘" : "Ctrl+");
-  }, []);
+  const prefix = useSyncExternalStore(
+    () => () => {},
+    getShortcutKeyPrefix,
+    () => "⌘",
+  );
   if (slot == null || slot < 1 || slot > 9) return null;
   return (
     <kbd className="pointer-events-none hidden font-sans text-[10px] font-medium tracking-tight text-[#b6b6b6] sm:inline">
@@ -42,7 +49,7 @@ function ShortcutHint({ slot }: { slot: number | null }) {
   );
 }
 
-export function StoreSwitcher({ stores, selectedScope }: Props) {
+export function StoreSwitcher({ stores, selectedScope, onCloseMobileNav }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
@@ -99,6 +106,7 @@ export function StoreSwitcher({ stores, selectedScope }: Props) {
                     if (next == null || typeof next !== "string") return;
                     startTransition(async () => {
                       await setSelectedStore(next === "all" ? "all" : next);
+                      onCloseMobileNav?.();
                     });
                   }}
                 >
@@ -164,7 +172,10 @@ export function StoreSwitcher({ stores, selectedScope }: Props) {
 
               <Menu.Item
                 closeOnClick
-                onClick={() => router.push("/settings")}
+                onClick={() => {
+                  onCloseMobileNav?.();
+                  router.push("/settings");
+                }}
                 className={cn(
                   "flex cursor-pointer items-center gap-2 rounded-lg py-2 pr-2 pl-2 text-sm outline-none select-none",
                   "text-[#333] data-[highlighted]:bg-[#ffeee0] data-[highlighted]:text-[#333]",

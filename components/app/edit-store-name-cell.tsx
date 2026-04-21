@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, Pencil, X } from "lucide-react";
 
 import { updateStoreName } from "@/app/actions/stores";
@@ -20,10 +20,6 @@ export function EditStoreNameCell({ storeId, displayName }: Props) {
   const [value, setValue] = useState(displayName);
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
-
-  useEffect(() => {
-    if (!editing) setValue(displayName);
-  }, [displayName, editing]);
 
   function cancel() {
     setValue(displayName);
